@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../App.css';
 import { connectToServer } from '../connection/socket';
 import { useAuth } from "../providers/auth";
 
