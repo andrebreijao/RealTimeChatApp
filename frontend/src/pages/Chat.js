@@ -1,22 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useAuth } from "../providers/auth";
-import { sendMessage, socket } from '../connection/socket'
-import { connectToServer } from '../connection/socket';
+import React, { useState, useRef, useEffect } from "react";
+import { sendMessage } from '../connection/socket'
+import { socket as connectSocket } from '../connection/socket'
 
 export default function Chat() {
   //let [searchParams, setSearchParams] = useSearchParams();
   // const user = searchParams.get("username") || "";
 
-  const { userInfo } = useAuth();
 
   //Page State
   const [msg, setMsg] = useState("")
   const [chatMessages, setChatMessages] = useState([]);
-  const { userName, Room } = useAuth();
 
   const kiko = (e) => {
     e.preventDefault();
-    console.log(chatMessages)
   };
 
   const getMessage = (e) => {
@@ -35,34 +31,22 @@ export default function Chat() {
     }
   };
 
-  //TODO make this run just once per msg in React
-  useEffect(
-    () => {
-      //listen to server messages
-      socket.on("banana", (message) => {
-        console.log(message);
-        setChatMessages([...chatMessages, message])
-      });
+  //TODO make this run just once in React
+  //listen to server messages
+  // socket.on("banana", (message) => {
+  //   console.log(message);
+  //   setChatMessages([...chatMessages, message])
+  // });
+
+
+  const socketRef = useRef();
+  useEffect(() => {
+    socketRef.current = connectSocket;
+    socketRef.current.on('banana', (msg) => {
+      console.log(msg);
+      setChatMessages([...chatMessages, msg])
     });
-
-  useEffect(() => {
-    //Emit message to the server
-    socket.emit('joinRoom', { userName, Room })
-  }, []);
-
-  //conect to server once the page loads
-  useEffect(() => {
-    connectToServer()
   }, [])
-
-  // const socketRef = useRef();
-  //   socketRef.current = io("http://localhost:5000/");
-  // useEffect(() => {
-  //   })
-  //   socketRef.current.on('banana', (msg) => {
-  //     console.log(msg);
-  //     setChatMessages([...chatMessages, msg])
-  // }, [])
 
   return (
     <div className="chat-container">

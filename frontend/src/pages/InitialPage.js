@@ -1,38 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { connectToServer } from '../connection/socket';
-import { useAuth } from "../providers/auth";
+import { socket as connectSocket } from '../connection/socket'
 
 function InitialPage() {
 
-  const { userInfo, setUserInfo } = useAuth();
   let navigate = useNavigate();
 
+  const [userName, setUserName] = useState('');
+  const [room, setRoom] = useState('');
+
   const onRoomChange = (e) => {
-    const updatedObject = Object.assign({}, userInfo)
-    updatedObject.Room = e.target.value;
-    setUserInfo(updatedObject)
+    setRoom(e.target.value);
   }
 
 
   const handleClick = (e) => {
     e.preventDefault();
 
+    //Socket
+    //conect to server once the page loads
+    const socket = connectSocket;
+    //Emit message to the server
+    socket.emit('joinRoom', { userName, room });
+
     navigate('/chat')
   }
 
   const getUserName = (e) => {
-    const updatedObject = Object.assign({}, userInfo)
-    updatedObject.name = e.target.value;
-    setUserInfo(updatedObject)
+    setUserName(e.target.value)
   }
 
-  const showApplicationState = (e) => {
-    e.preventDefault();
-    console.log(userInfo)
-  }
-
-  //conect to server once the page loads
   // useEffect(() => { connectToServer() }, [])
 
   return (
@@ -65,7 +62,7 @@ function InitialPage() {
             </select>
           </div>
           <button className="btn" onClick={handleClick}>Join Chat</button>
-          <button className="btn" onClick={showApplicationState}>Button Teste</button>
+          <button className="btn" >Button Teste</button>
         </form>
       </main>
     </div>);
