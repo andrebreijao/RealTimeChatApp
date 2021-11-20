@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../providers/auth";
 import { sendMessage, socket } from '../connection/socket'
 
@@ -16,7 +16,7 @@ export default function Chat() {
 
   const kiko = (e) => {
     e.preventDefault();
-    console.log(userInfo.name)
+    console.log(chatMessages)
   };
 
   const getMessage = (e) => {
@@ -35,10 +35,14 @@ export default function Chat() {
     }
   };
 
-  //listen to server messages
-  socket.on("banana", (message) => {
-    setChatMessages([...chatMessages, message])
-  });
+  useEffect(
+    () => {
+      //listen to server messages
+      socket.on("banana", (message) => {
+        console.log(message);
+        setChatMessages([...chatMessages, message])
+      });
+    });
 
 
   return (
@@ -65,9 +69,9 @@ export default function Chat() {
           {chatMessages.map((msg, key) => {
             return (
               <div className="message" key={key}>
-                < p className="meta" > Mary < span > 9:15pm</span></p>
+                < p className="meta" > {msg.userName} < span >{msg.time}</span></p>
                 <p className="text">
-                  {msg}
+                  {msg.text}
                 </p>
               </div>
             )
