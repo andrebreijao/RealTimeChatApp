@@ -9,8 +9,11 @@ function InitialPage() {
   let navigate = useNavigate();
 
   const onRoomChange = (e) => {
-    console.log(e.target.value)
+    const updatedObject = Object.assign({}, userInfo)
+    updatedObject.Room = e.target.value;
+    setUserInfo(updatedObject)
   }
+
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -19,16 +22,18 @@ function InitialPage() {
   }
 
   const getUserName = (e) => {
-    setUserInfo({ name: e.target.value })
+    const updatedObject = Object.assign({}, userInfo)
+    updatedObject.name = e.target.value;
+    setUserInfo(updatedObject)
   }
 
   const showApplicationState = (e) => {
     e.preventDefault();
-    console.log(userInfo.name)
+    console.log(userInfo)
   }
 
   //conect to server once the page loads
-  useEffect(() => { connectToServer()},[])
+  // useEffect(() => { connectToServer() }, [])
 
   return (
     <div className="join-container">

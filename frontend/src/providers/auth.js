@@ -6,7 +6,8 @@ export const AuthContext = React.createContext({});
 export const AuthProvider = (props) => {
   const [userInfo, setUserInfo] = useState(
     {
-      name: ""
+      userName: "",
+      room: '',
     }
   )
   return (

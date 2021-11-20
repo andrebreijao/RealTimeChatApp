@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../providers/auth";
 import { sendMessage, socket } from '../connection/socket'
-
-
+import { connectToServer } from '../connection/socket';
 
 export default function Chat() {
   //let [searchParams, setSearchParams] = useSearchParams();
@@ -13,6 +12,7 @@ export default function Chat() {
   //Page State
   const [msg, setMsg] = useState("")
   const [chatMessages, setChatMessages] = useState([]);
+  const { userName, Room } = useAuth();
 
   const kiko = (e) => {
     e.preventDefault();
@@ -35,6 +35,7 @@ export default function Chat() {
     }
   };
 
+  //TODO make this run just once per msg in React
   useEffect(
     () => {
       //listen to server messages
@@ -44,6 +45,24 @@ export default function Chat() {
       });
     });
 
+  useEffect(() => {
+    //Emit message to the server
+    socket.emit('joinRoom', { userName, Room })
+  }, []);
+
+  //conect to server once the page loads
+  useEffect(() => {
+    connectToServer()
+  }, [])
+
+  // const socketRef = useRef();
+  //   socketRef.current = io("http://localhost:5000/");
+  // useEffect(() => {
+  //   })
+  //   socketRef.current.on('banana', (msg) => {
+  //     console.log(msg);
+  //     setChatMessages([...chatMessages, msg])
+  // }, [])
 
   return (
     <div className="chat-container">
