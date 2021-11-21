@@ -7,7 +7,7 @@ function InitialPage() {
   let navigate = useNavigate();
 
   const [userName, setUserName] = useState('');
-  const [room, setRoom] = useState('');
+  const [room, setRoom] = useState('JavaScript');
 
   const onRoomChange = (e) => {
     setRoom(e.target.value);

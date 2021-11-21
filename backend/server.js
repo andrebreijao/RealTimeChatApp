@@ -2,8 +2,8 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { formatMessage } from './utils/message.js'
-import { userJoin, getCurrentUser } from './utils/users.js';
-import {users}  from './utils/users.js'
+import { userJoin, getCurrentUser, userLeave } from './utils/users.js';
+import { users } from './utils/users.js'
 
 const app = express();
 const httpServer = createServer(app);
@@ -51,7 +51,11 @@ io.on("connection", (socket) => {
 
   //Runs when the user disconnect
   socket.on('disconnect', () => {
-    io.emit('banana', formatMessage(botName, 'A user has joined the chat!'))
+    const user = userLeave(socket.id)
+
+    if (user) {
+      io.to(user.room).emit('banana', formatMessage(botName, `${user.userName} has left the chat!`))
+    }
   });
 
 });
