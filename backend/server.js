@@ -28,17 +28,17 @@ io.on("connection", (socket) => {
 
     //sent a message to the single client that trigged the event
     //Emit the room history with the welcome in the end
-    // socket.emit('banana', [...messageHistory, formatMessage(botName, 'Welcome to Chat Cord!')])
+    // socket.emit('chatMsg', [...messageHistory, formatMessage(botName, 'Welcome to Chat Cord!')])
 
     //All clients except the one that is connecting
     //broadcast when a user join the chat 
-    // socket.broadcast.emit('banana', formatMessage(botName, 'A user has joined the chat!'));
+    // socket.broadcast.emit('chatMsg', formatMessage(botName, 'A user has joined the chat!'));
 
     //broadcast to a specific room
-    // socket.broadcast.to(user.room).emit('banana', [...messageHistory, formatMessage(botName, `${user.userName} has joined the chat!`)]);
+    // socket.broadcast.to(user.room).emit('chatMsg', [...messageHistory, formatMessage(botName, `${user.userName} has joined the chat!`)]);
 
     //Make an unique chat for all users
-    io.to(user.room).emit('banana', addAndReturnRoomHistory(`${user.userName} has joined the chat!`, botName, user.room))
+    io.to(user.room).emit('chatMsg', addAndReturnRoomHistory(`${user.userName} has joined the chat!`, botName, user.room))
   });
 
   //All the client in general
@@ -46,9 +46,9 @@ io.on("connection", (socket) => {
 
 
   //listen to chat messages from the frontend
-  socket.on('banana', msg => {
+  socket.on('chatMsg', msg => {
     const user = getCurrentUser(socket.id);
-    io.to(user.room).emit('banana', addAndReturnRoomHistory(msg, user.userName, user.room))
+    io.to(user.room).emit('chatMsg', addAndReturnRoomHistory(msg, user.userName, user.room))
   });
 
   //Runs when the user disconnect
@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
     const user = userLeave(socket.id)
 
     if (user) {
-      io.to(user.room).emit('banana', addAndReturnRoomHistory(`${user.userName} has left the chat!`, botName, user.room))
+      io.to(user.room).emit('chatMsg', addAndReturnRoomHistory(`${user.userName} has left the chat!`, botName, user.room))
     }
   });
 

@@ -11,6 +11,6 @@ export const socket = io("http://localhost:5000/");
 
 //Emit message to the server
 export const sendMessage = (msg) => {
-  socket.emit('banana', msg)
+  socket.emit('chatMsg', msg)
 }
 

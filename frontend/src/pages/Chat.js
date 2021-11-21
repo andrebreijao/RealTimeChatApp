@@ -3,9 +3,6 @@ import { sendMessage } from '../connection/socket'
 import { socket as connectSocket } from '../connection/socket'
 
 export default function Chat() {
-  //let [searchParams, setSearchParams] = useSearchParams();
-  // const user = searchParams.get("username") || "";
-
 
   //Page State
   const [msg, setMsg] = useState("")
@@ -31,18 +28,10 @@ export default function Chat() {
     }
   };
 
-  //TODO make this run just once in React
-  //listen to server messages
-  // socket.on("banana", (message) => {
-  //   console.log(message);
-  //   setChatMessages([...chatMessages, message])
-  // });
-
-
   const socketRef = useRef();
   useEffect(() => {
     socketRef.current = connectSocket;
-    socketRef.current.on('banana', (msg) => {
+    socketRef.current.on('chatMsg', (msg) => {
       console.log(msg);
       setChatMessages(msg)
     });
@@ -60,6 +49,7 @@ export default function Chat() {
           <h3><i className="fas fa-comments"></i> Room Name:</h3>
           <h2 id="room-name">JavaScript</h2>
           <h3><i className="fas fa-users"></i> Users</h3>
+          {/* TODO: Finish side bar info */}
           <ul id="users">
             <li>Brad</li>
             <li>John</li>
