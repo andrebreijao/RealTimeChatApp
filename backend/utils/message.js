@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const formatMessage = (userName, text)=>{
+export const formatMessage = (userName, text) => {
   return {
     userName,
     text,

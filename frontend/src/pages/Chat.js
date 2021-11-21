@@ -44,7 +44,7 @@ export default function Chat() {
     socketRef.current = connectSocket;
     socketRef.current.on('banana', (msg) => {
       console.log(msg);
-      setChatMessages([...chatMessages, msg])
+      setChatMessages(msg)
     });
   }, [])
 
